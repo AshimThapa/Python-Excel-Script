@@ -6,5 +6,5 @@ Save the file as new excel file.
 This script eliminates the day to day entry of hundreds of data to cells on excel.
 
 
-the code here generates auto toll notice for 13 motorways in Australai.
+the code here generates auto toll notice for 13 motorways in Australia.
 
