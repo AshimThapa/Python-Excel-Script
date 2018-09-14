@@ -23,10 +23,8 @@ from calendar import monthrange
 from pathlib import Path
 
 #path where your files and log files are located
-#add='E:/AshimTest/myscript/Logs/'
-add='C:/Users/ashim/AppData/Local/Programs/Python/Python37-32/myscriptV2/Logs/'
-#file_path='E:/AshimTest/myscript/'
-file_path='C:/Users/ashim/AppData/Local/Programs/Python/Python37-32/myscriptV2/'
+add='C:......../Logs/'
+file_path='C:...../'
 
 lines=[]
 
@@ -119,7 +117,7 @@ for m in motorway:
         logger.info("Template Loaded\n")
    
         
-       #NOW CHECK IF NAMESHEET ALREADY EXIST
+       #NOW CHECK IF SHEET ALREADY EXIST for today's date
         try:
             if not namesheet in wb.sheetnames:            
                             
@@ -428,46 +426,46 @@ for m in motorway:
                     ws['J27']=round((total_07108_Amount/11)*10,2)
                     
                 if(m=='BAC'):
-                    ws['J22']=round((-total_07111_Trip*0.16),2)
+                    ws['J22']=round((-total_07111_Trip*x),2)
                     if total_07108_Trip!=0:
-                        ws['J28']=round((-total_07108_Trip*0.16),2)
+                        ws['J28']=round((-total_07108_Trip*x),2)
                 elif(m=='EHML'):
-                    ws['J22']=round((-total_07111_Trip*0.16),2)
-                    ws['J28']=round((-total_07108_Trip*0.16),2)
-                    ws['J34']=round((-total_33111_Trip*0.16),2)
-                    ws['J40']=round((-total_33108_Trip*0.16),2)
+                    ws['J22']=round((-total_07111_Trip*x),2)
+                    ws['J28']=round((-total_07108_Trip*x),2)
+                    ws['J34']=round((-total_33111_Trip*x),2)
+                    ws['J40']=round((-total_33108_Trip*x6),2)
                 elif(m in ('LCT','M1','M4WCX')):
-                    ws['J22']=round((-total_07111_Trip*0.13-total_07111_Amount*0.8/100),2)
-                    ws['J28']=round((-total_07108_Trip*0.13-total_07108_Amount*0.8/100),2)
-                    ws['J34']=round((-total_33111_Trip*0.13-total_33111_Amount*0.8/100),2)
-                    ws['J40']=round((-total_33108_Trip*0.13-total_33108_Amount*0.8/100),2)
+                    ws['J22']=round((-total_07111_Trip*x-total_07111_Amount*x/100),2)
+                    ws['J28']=round((-total_07108_Trip*x-total_07108_Amount*x/100),2)
+                    ws['J34']=round((-total_33111_Trip*x-total_33111_Amount*x/100),2)
+                    ws['J40']=round((-total_33108_Trip*x-total_33108_Amount*x/100),2)
                 elif(m=='QML'):
-                    ws['J22']=0
-                    ws['J28']=0
-                    ws['J34']=0
-                    ws['J40']=0
+                    ws['J22']=x
+                    ws['J28']=x
+                    ws['J34']=x
+                    ws['J40']=x
                 elif(m=='SAB'):
-                    ws['J22']=round((-total_07111_Trip*0.12-(float(ws['J21'].value)*0.75)/100),2)
-                    ws['J28']=round((-total_07108_Trip*0.12-(float(ws['J27'].value)*0.75)/100),2)
+                    ws['J22']=round((-total_07111_Trip*x-(float(ws['J21'].value)*x)/100),2)
+                    ws['J28']=round((-total_07108_Trip*x-(float(ws['J27'].value)*x)/100),2)
                 elif(m in ('MCL','SAT','SHB')):
                     if(m=='SAT'):
-                        ws['J22']=round((-total_07111_Trip*0.14),2)
-                        ws['J28']=round((-total_07108_Trip*0.14),2)
+                        ws['J22']=round((-total_07111_Trip*x),2)
+                        ws['J28']=round((-total_07108_Trip*x),2)
                     else:
-                        ws['J22']=round((-total_07111_Trip*0.14),2)
+                        ws['J22']=round((-total_07111_Trip*x),2)
                         if(total_07108_Trip!=0):
-                            ws['J28']=round((-total_07108_Trip*0.14),2)
-                        ws['J34']=round((-total_33111_Trip*0.14),2)
+                            ws['J28']=round((-total_07108_Trip*x),2)
+                        ws['J34']=round((-total_33111_Trip*x),2)
                         if(total_33108_Trip!=0):
-                            ws['J40']=round((-total_33108_Trip*0.14),2)                        
+                            ws['J40']=round((-total_33108_Trip*x),2)                        
                 else:
-                    ws['J22']=round((-total_07111_Trip*0.125-total_07111_Amount*0.75/100),2)
+                    ws['J22']=round((-total_07111_Trip*x-total_07111_Amount*x/100),2)
                     if(total_07108_Trip!=0):
-                        ws['J28']=round((-total_07108_Trip*0.125-total_07108_Amount*0.75/100),2)
+                        ws['J28']=round((-total_07108_Trip*x-total_07108_Amount*x/100),2)
                     
-                    ws['J34']=round((-total_33111_Trip*0.125-total_33111_Amount*0.75/100),2)
+                    ws['J34']=round((-total_33111_Trip*x-total_33111_Amount*x/100),2)
                     if(total_33108_Trip!=0):
-                        ws['J40']=round((-total_33108_Trip*0.125-total_33108_Amount*0.75/100),2)
+                        ws['J40']=round((-total_33108_Trip*x-total_33108_Amount*x/100),2)
                     
                     
                 
