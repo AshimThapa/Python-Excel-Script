@@ -10,9 +10,9 @@ def sendEmail(paths,file_path):
         email_list=email_file.readlines()
 
     msg=MIMEMultipart()
-    sender='casit@eway.net.au'
-    subject='ALERT !!! Main PAge missing file'
-    body='Hi\n'+'There has been multiple trip files during this month.\n'+'Please refer to the attached file\n\n\n'+'Regards\n'+'Auto CAS.'
+    sender='sender@email.com'
+    subject='ALERT !!! Main Page missing file'
+    body='Hi\n'+'There has been multiple trip files during this month.\n'+'Please refer to the attached file\n\n\n'+'Regards\n'+'Auto SYS.'
     msg['From']=sender
     msg['To']=','.join(email_list)
     msg['Subject']=subject
@@ -28,7 +28,7 @@ def sendEmail(paths,file_path):
         part.add_header('Content-Disposition','attachment;filename="{}"'.format(op.basename(path)))
         msg.attach(part)
 
-    s=SMTP('webmail.interlinkroads.com.au')
+    s=SMTP('your.smtp.com')
     s.sendmail(sender,email_list,msg.as_string())
     s.quit()
     return
