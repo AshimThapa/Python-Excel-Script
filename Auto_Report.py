@@ -1,24 +1,32 @@
 """
 Written by Ashim Thapa 27/02/2018
 
+It generates Auto Daily Toll Notice for 13 motorways.
+
 This python script loads an excel file as template
 Reads the text file values and
-The values are entred into the excel sheet.
+The values are entered into the excel sheet.
 """
-
+import EmailLib
 import openpyxl
 import time
 import sys
 import myFunctions
+import loadTemplate
+import MainPage
 from openpyxl import load_workbook
 from openpyxl.styles import Font,Alignment,Border,Side
 from openpyxl.styles import Color
 from openpyxl.cell import Cell
 import logging
+from calendar import monthrange
+from pathlib import Path
 
 #path where your files and log files are located
-log_file=#provide your log file folder path
-file_path=#provide your file folder path
+#add='E:/AshimTest/myscript/Logs/'
+add='C:/Users/ashim/AppData/Local/Programs/Python/Python37-32/myscriptV2/Logs/'
+#file_path='E:/AshimTest/myscript/'
+file_path='C:/Users/ashim/AppData/Local/Programs/Python/Python37-32/myscriptV2/'
 
 lines=[]
 
@@ -32,10 +40,21 @@ namesheet=time.strftime("%d%b")
 mYYYY=time.strftime("%b%Y")
 #GET TODAY'S DAY IN NUMBER
 day=time.strftime("%d")
+
+
+
+
+month=int(time.strftime('%m'))
+year=int(time.strftime('%Y'))
+last_day=monthrange(year,month)[1]
 #Motorway Short Descriptions
 
-#motorway=['BAC','CCM','EHML','ELK','LCT','M1','M4WCX','M7','MCL','QML','SABL','SACL','SHB']
-motorway=['SABL']
+"""
+For future add your motorways here and make sure template files are ready for that motorway
+"""
+motorway=['BAC','CCM','EHML','ELK','LCT','M1','M4WCX','M7','MCL','QML','SAB','SAT','SHB']
+#motorway=['CCM']
+path_list=[]
 
 
 
@@ -45,10 +64,12 @@ motorway=['SABL']
 #Loop through each MOTORWAY 
 for m in motorway:
 #Define LOGS
-    #log_name=log_file+m+'.txt'
-    #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-    #logger=logging.getLogger(m)     
-        
+    #log_name=add+m+'.txt'
+    #logging.basicConfig(filename=add+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
+    #logger=logging.getLogger(m)
+
+#boolean value to trigger for more than one file
+    error_flag=False
 #list that holds admin fees
     admin_fee_33111=[]
     admin_fee_33108=[]
@@ -91,101 +112,8 @@ for m in motorway:
 
     try:
         #LOAD THE RIGHT TEMPLATE
-        """
-        If you add a new motorway in the list above,make sure you add another nested if else statement below
-        """
-        if(m=='BAC'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #for first moth of day load the template
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/BAC.xlsx')
-            else:
-                #for rest of the days just load the file with prefix month and year eg:MAR2018,not the template
-                wb=load_workbook(filename=file_path+'File/BAC/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='CCM'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/CCM.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/CCM/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='EHML'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/EHML.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/EHML/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='ELK'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/ELK.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/ELK/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='LCT'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/LCT.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/LCT/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='M1'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/M1.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/M1/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='M4WCX'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/M4WCX.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/M4WCX/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='M7'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/M7.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/M7/'+m+'_'+mYYYY+'.xlsx')            
-        elif(m=='MCL'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/MCL.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/MCL/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='QML'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/QML.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/QML/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='SABL'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/SABL.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/SABL/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='SACL'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/SACL.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/SACL/'+m+'_'+mYYYY+'.xlsx')
-        elif(m=='SHB'):
-            logger=myFunctions.setup_logger(m,log_file+m)
-            #logging.basicConfig(filename=log_file+m+'.txt',level=logging.DEBUG,format='\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
-            if(day=='01'):
-                wb=load_workbook(filename=file_path+'template/SHB.xlsx')
-            else:                  
-                wb=load_workbook(filename=file_path+'File/SHB/'+m+'_'+mYYYY+'.xlsx')
+        print(m)        
+        (wb,logger)=loadTemplate.load(file_path,m,add,day,mYYYY)
         logger.info("start of Process\n")
         logger.info("=======================================================================\n")
         logger.info("Template Loaded\n")
@@ -247,6 +175,11 @@ for m in motorway:
                 
                 logger.info("*************************************************************************************\n")
 
+#creates a text file to alert at the month end that there were more than one files on a day
+                if(file_07_111 > 1 or file_07_108 > 1 or file_33_111 >1 or file_33_108 > 1):
+                    with open(file_path+"/Email/"+m+".txt","a") as f:
+                        f.write("More than one trip file received on date: "+namesheet+"\n")
+
                 for index in range(len(lines)):
             #Read and process first file
                     try:
@@ -296,7 +229,6 @@ for m in motorway:
                             elif(c_111==2):
                                 c=['26','27']
                                 ws['C27']='Rejected Trips'
-                                ws['C27'].font=Font(color='ff0000')
                                 ws['C27'].font=Font(color='ff0000')
                                 v=[f_detail,f_no,rawData[1],rawData[2],rawData[3],rawData[4]]
                                 (tT,tA)=myFunctions.InsertCellValues(r1,c,v,ws)
@@ -496,9 +428,9 @@ for m in motorway:
                     ws['J27']=round((total_07108_Amount/11)*10,2)
                     
                 if(m=='BAC'):
-                    ws['J22']=round((-total_07111_Trip*0.157),2)
+                    ws['J22']=round((-total_07111_Trip*0.16),2)
                     if total_07108_Trip!=0:
-                        ws['J28']=round((-total_07108_Trip*0.157),2)
+                        ws['J28']=round((-total_07108_Trip*0.16),2)
                 elif(m=='EHML'):
                     ws['J22']=round((-total_07111_Trip*0.16),2)
                     ws['J28']=round((-total_07108_Trip*0.16),2)
@@ -514,11 +446,11 @@ for m in motorway:
                     ws['J28']=0
                     ws['J34']=0
                     ws['J40']=0
-                elif(m=='SABL'):
+                elif(m=='SAB'):
                     ws['J22']=round((-total_07111_Trip*0.12-(float(ws['J21'].value)*0.75)/100),2)
                     ws['J28']=round((-total_07108_Trip*0.12-(float(ws['J27'].value)*0.75)/100),2)
-                elif(m in ('MCL','SACL','SHB')):
-                    if(m=='SACL'):
+                elif(m in ('MCL','SAT','SHB')):
+                    if(m=='SAT'):
                         ws['J22']=round((-total_07111_Trip*0.14),2)
                         ws['J28']=round((-total_07108_Trip*0.14),2)
                     else:
@@ -540,7 +472,7 @@ for m in motorway:
                     
                 
 
-                if(m not in ('BAC','SABL','SACL')):
+                if(m not in ('BAC','SAB','SAT')):
                    ws['J33']=round((total_33111_Amount/11)*10,2)
                    if(total_33108_Amount!=0):
                        ws['J39']=round((total_33108_Amount/11)*10,2)                  
@@ -620,11 +552,21 @@ for m in motorway:
                                 myFunctions.Fill_Fee(indx,2,admin_fee_33108,ws)
                                 indx+=1
                                 admin_next=indx
-                logger.info("Data inserted into file\n")            
-            #save file
-                wb.save(file_path+'File/'+m+'/'+m+'_'+mYYYY+'.xlsx')
+                logger.info("Data inserted into file\n")
+                logger.info("Last_day "+str(last_day))
+                logger.info("today: "+str(day))
+                logger.info("Validating last day of month")
+                if(int(day)==int(last_day)):
+                    logger.info("Creating month end data")
+                    logger.info("checking text file for multiple file entries")
+                    #if file exist enter path to a list
+                    if Path(file_path+"/Email/"+m+".txt").is_file():
+                        path_list.append(file_path+"/Email/"+m+".txt")
+                    #call funcion to fill main page                     
+                    MainPage.CallMainPage(m,wb,logger) #,file_07_111,file_07_108,file_33_111,file_33_108)
                 logger.info("Excell file Created and saved.logger file Created as well\n")
-                logger.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n")
+                wb.save(file_path+'File/'+m+'/'+m+'_'+mYYYY+'.xlsx')
+                logger.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n")    
                 logger.info("End of Process")
             else:
                 raise FileExistsError("Sheet already exist with current date as name,please check the excel file\n")
@@ -639,6 +581,14 @@ for m in motorway:
     except Exception as err:
         logger.exception(str(err))
         log=myFunctions.setup_logger('email','test.log')
-        log.exception("File not found,please have a look, thanks CAS ITt")
-        
-                               
+        log.exception("File not found,please have a look, thanks CAS IT  ")
+ #if last day of month send ALERT EMAIL for MAIN PAGE     
+if(int(day)==int(last_day)):
+     if not path_list:
+         logger.info('No Multiple trips for this month for any motorways')
+     else:
+         EmailLib.sendEmail(path_list,file_path)
+
+     
+
+ 

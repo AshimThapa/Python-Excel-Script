@@ -6,12 +6,13 @@ from openpyxl.styles import Font,Alignment,Border,Side
 from openpyxl.styles import Color
 from openpyxl.cell import Cell
 import logging,logging.handlers
-import time
+import os
+
 
 formatter=logging.Formatter('\n\n%(asctime)s %(message)s',datefmt='%H:%M:%S')
 created_time=time.strftime('%d%m%y%H%M%S')
 
-def setup_logger(name,log_file,level=logging.ERROR):
+def setup_logger(name,log_file,level=logging.INFO):
         if name!= 'email':
                 handler=logging.FileHandler(log_file+'_'+created_time+'.log')
                 handler.setFormatter(formatter)
@@ -24,7 +25,7 @@ def setup_logger(name,log_file,level=logging.ERROR):
                                             secure=None)
 
         logger=logging.getLogger(name)
-        logger.setLevel(level)
+        logger.setLevel(logging.INFO)
         logger.addHandler(handler)
         return logger
 
@@ -221,5 +222,9 @@ def Fill_Fee_Text(index,ws,f_list,f_detail):
         ws['G'+str(index)].font=Font(color='0000FF')
         ws['G'+str(index)].alignment=Alignment(horizontal='left')
         return
-
+def Delete_Txt(file_path,m):
+        path=file_path+"/Email/"+m+".txt"
+        if os.path.isfile(path):
+                          os.remove(path)
+        return
 
