@@ -17,11 +17,11 @@ def setup_logger(name,log_file,level=logging.INFO):
                 handler=logging.FileHandler(log_file+'_'+created_time+'.log')
                 handler.setFormatter(formatter)
         else:
-                handler=logging.handlers.SMTPHandler(mailhost='webmail.interlinkroads.com.au',
-                                            fromaddr='casit@eway.net.au',
-                                            toaddrs=['athapa@interlinkroads.com.au'],
+                handler=logging.handlers.SMTPHandler(mailhost='your.host.com',
+                                            fromaddr='sender@email.com',
+                                            toaddrs=['receiver@email.com'],
                                             subject='Auto daily toll notice Error !!!',
-                                            credentials='casit@eway.net.au',
+                                            credentials='yourcredentials',
                                             secure=None)
 
         logger=logging.getLogger(name)
